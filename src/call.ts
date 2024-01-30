@@ -1,25 +1,31 @@
-import { PACKAGE_ID, ADMIN_CAP, signer, tx } from "./config";
+import { TransactionBlock } from '@mysten/sui.js/transactions';
+import { client, keypair, getId } from './utils.js';
 
 (async () => {
-    console.log("running...");
+	try {
+		console.log("calling...")
 
-    tx.moveCall({
-        target: `${PACKAGE_ID}::module::function_name`,
-        typeArguments: [],
-        arguments: [
-            tx.object(ADMIN_CAP),
-        ]
-    });
-    tx.setGasBudget(10000000);
-    const moveCallTxn = await signer.signAndExecuteTransactionBlock({
-        transactionBlock: tx,
-        requestType: "WaitForLocalExecution",
-        options: {
-            showObjectChanges: true,
-            showEffects: true,
-        }
-    });
+		const tx = new TransactionBlock();
 
-    console.log("moveCallTxn", moveCallTxn);
-    console.log("STATUS: ", moveCallTxn.effects?.status);
+		let [account] = tx.moveCall({
+			target: `${getId("package")}::module_name::function_name`,
+			arguments: [getId("module_name::Type_name"), "other_objet_id"],
+		});
+
+		tx.transferObjects([account], keypair.getPublicKey().toSuiAddress());
+
+		const result = await client.signAndExecuteTransactionBlock({
+			signer: keypair,
+			transactionBlock: tx,
+			options: {
+				showObjectChanges: true,
+			},
+			requestType: "WaitForLocalExecution"
+		});
+
+		console.log("result: ", JSON.stringify(result, null, 2));
+
+	} catch (e) {
+		console.log(e)
+	}
 })()
