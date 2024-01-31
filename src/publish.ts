@@ -4,7 +4,7 @@ import * as fs from "fs";
 import { client, keypair, IObjectInfo, getId } from './utils.js';
 
 (async () => {
-	console.log("publishing...")
+	console.log("building package...")
 	
 	const { execSync } = require('child_process');
 	const { modules, dependencies } = JSON.parse(
@@ -12,6 +12,8 @@ import { client, keypair, IObjectInfo, getId } from './utils.js';
 		encoding: 'utf-8',
 	}),
 	);
+
+	console.log("publishing...")
 
 	try {		
 		const tx = new TransactionBlock();
