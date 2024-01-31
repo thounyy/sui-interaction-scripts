@@ -1,6 +1,5 @@
 import { TransactionBlock } from '@mysten/sui.js/transactions';
 import { OwnedObjectRef } from '@mysten/sui.js/client';
-import { stringify } from "csv";
 import * as fs from "fs";
 import { client, keypair, IObjectInfo, getId } from './utils.js';
 

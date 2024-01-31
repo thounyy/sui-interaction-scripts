@@ -7,12 +7,12 @@ import { client, keypair, getId } from './utils.js';
 
 		const tx = new TransactionBlock();
 
-		let [account] = tx.moveCall({
+		let [returned_object] = tx.moveCall({
 			target: `${getId("package")}::module_name::function_name`,
 			arguments: [getId("module_name::Type_name"), "other_objet_id"],
 		});
 
-		tx.transferObjects([account], keypair.getPublicKey().toSuiAddress());
+		tx.transferObjects([returned_object], keypair.getPublicKey().toSuiAddress());
 
 		const result = await client.signAndExecuteTransactionBlock({
 			signer: keypair,
