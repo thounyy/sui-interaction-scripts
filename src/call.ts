@@ -7,6 +7,8 @@ import { client, keypair, getId } from './utils.js';
 
 		const tx = new TransactionBlock();
 
+		tx.setGasBudget(10000000);
+
 		let [returned_object] = tx.moveCall({
 			target: `${getId("package")}::module_name::function_name`,
 			arguments: [getId("module_name::Type_name"), "other_objet_id"],
@@ -19,11 +21,13 @@ import { client, keypair, getId } from './utils.js';
 			transactionBlock: tx,
 			options: {
 				showObjectChanges: true,
+				showEffects: true,
 			},
 			requestType: "WaitForLocalExecution"
 		});
 
-		console.log("result: ", JSON.stringify(result, null, 2));
+		console.log("result: ", JSON.stringify(result.objectChanges, null, 2));
+		console.log("status: ", JSON.stringify(result.effects?.status, null, 2));
 
 	} catch (e) {
 		console.log(e)
