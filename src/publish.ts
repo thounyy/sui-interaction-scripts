@@ -52,12 +52,17 @@ import { client, keypair, IObjectInfo, getId } from './utils.js';
         createdObjects.forEach((item) => {
             if (item.data?.type === "package") {
 				objects.push({
-					type: "package",
+					type: "package_id",
 					id: item.data?.objectId,
 				});
             } else if (!item.data!.type!.startsWith("0x2::")) {
 				objects.push({
 					type: item.data?.type!.slice(68),
+					id: item.data?.objectId,
+				});
+            } else {
+				objects.push({
+					type: item.data?.type!.slice(5),
 					id: item.data?.objectId,
 				});
             }

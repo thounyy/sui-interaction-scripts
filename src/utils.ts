@@ -19,7 +19,11 @@ export const getId = (type: string): string | undefined => {
         const rawData = fs.readFileSync('./created.json', 'utf8');
         const parsedData: IObjectInfo[] = JSON.parse(rawData);
         const typeToId = new Map(parsedData.map(item => [item.type, item.id]));
-        return typeToId.get(type);
+        for (let [key, value] of typeToId) {
+            if (key && key.startsWith(type)) {
+                return value;
+            } 
+        }
     } catch (error) {
         console.error('Error reading the created file:', error);
     }
